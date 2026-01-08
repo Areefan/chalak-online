@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎉 จับฉลากปีใหม่ | Lucky Draw</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Top Buttons -->
+        <div class="top-buttons">
+            <button id="soundToggleBtn" class="icon-btn" title="เปิด/ปิดเสียง">🔊</button>
+            <!-- <button id="fullscreenBtn" class="icon-btn" title="เต็มจอ">⛶</button> -->
+        </div>
+
+        <!-- Header -->
+        <header class="header">
+            <h1>🎊 จับฉลากปีใหม่ 🎊</h1>
+            <p class="subtitle">สุ่มรางวัลปีใหม่อย่างสนุกสนาน!</p>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="tabs">
+            <button class="tab-btn active" data-tab="setup">📝 ตั้งค่ารายชื่อ</button>
+            <button class="tab-btn" data-tab="draw">🎰 จับฉลาก</button>
+            <button class="tab-btn" data-tab="winners">🏆 ผู้โชคดี</button>
+        </nav>
+
+        <!-- Tab: Setup Names -->
+        <section id="setup" class="tab-content active">
+            <div class="setup-container">
+                <!-- Input Section -->
+                <div class="input-section">
+                    <h2>เพิ่มรายชื่อ</h2>
+                    
+                    <!-- Manual Input -->
+                    <div class="manual-input">
+                        <div class="input-group">
+                            <input type="text" id="nameInput" placeholder="พิมพ์ชื่อที่นี่..." autocomplete="off">
+                            <button id="addNameBtn" class="btn btn-add">+ เพิ่ม</button>
+                        </div>
+                    </div>
+
+                    <!-- File Upload -->
+                    <div class="file-upload">
+                        <label for="fileInput" class="upload-label">
+                            <span class="upload-icon">📁</span>
+                            <span>อัพโหลดไฟล์ CSV หรือ TXT</span>
+                            <span class="upload-hint">(หนึ่งชื่อต่อบรรทัด)</span>
+                        </label>
+                        <input type="file" id="fileInput" accept=".csv,.txt" hidden>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="quick-actions">
+                        <button id="shuffleBtn" class="btn btn-shuffle">🔀 สุ่มสลับลำดับ</button>
+                        <button id="clearAllBtn" class="btn btn-danger">🗑️ ลบทั้งหมด</button>
+                    </div>
+                </div>
+
+                <!-- Names List -->
+                <div class="names-section">
+                    <h2>รายชื่อทั้งหมด <span id="totalCount" class="count-badge">0</span></h2>
+                    <div id="namesList" class="names-list">
+                        <p class="empty-message">ยังไม่มีรายชื่อ กรุณาเพิ่มรายชื่อก่อนจับฉลาก</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tab: Draw -->
+        <section id="draw" class="tab-content">
+            <div class="draw-container">
+                <!-- Remaining Count -->
+                <div class="remaining-count">
+                    เหลือสลาก <span id="remainingCount">0</span> ใบ
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="draw-actions">
+                    <button id="shakeBtn" class="shake-btn" disabled>
+                        <span>🫨 เขย่า</span>
+                    </button>
+                    <button id="drawBtn" class="draw-btn" disabled>
+                        <span class="draw-btn-text">จับสลาก!</span>
+                    </button>
+                </div>
+
+                <!-- Lottery Jar -->
+                <div class="jar-container">
+                    <div class="jar">
+                        <div class="jar-lid"></div>
+                        <div class="jar-body">
+                            <div class="jar-shine"></div>
+                            <div id="tickets" class="tickets"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tab: Winners -->
+        <section id="winners" class="tab-content">
+            <div class="winners-container">
+                <h2>🏆 รายชื่อผู้โชคดี</h2>
+                <div id="winnersList" class="winners-list">
+                    <p class="empty-message">ยังไม่มีผู้โชคดี</p>
+                </div>
+                <button id="resetBtn" class="btn btn-reset">🔄 เริ่มใหม่ทั้งหมด</button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Winner Modal -->
+    <div id="winnerModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🎉 ยินดีด้วย! 🎉</h2>
+            </div>
+            <div class="modal-body">
+                <div class="winner-name" id="winnerName"></div>
+                <p class="winner-subtitle">คือผู้โชคดี!</p>
+            </div>
+            <div class="modal-footer">
+                <button id="closeModalBtn" class="btn btn-primary">ตกลง</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confetti Canvas -->
+    <canvas id="confetti"></canvas>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content confirm-modal-content">
+            <div class="modal-header">
+                <h2 id="confirmTitle">⚠️ ยืนยันการทำรายการ</h2>
+            </div>
+            <div class="modal-body">
+                <p id="confirmMessage">คุณต้องการดำเนินการนี้ใช่หรือไม่?</p>
+            </div>
+            <div class="modal-footer confirm-buttons">
+                <button id="confirmCancelBtn" class="btn btn-secondary">ยกเลิก</button>
+                <button id="confirmOkBtn" class="btn btn-danger">ยืนยัน</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
