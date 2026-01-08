@@ -116,7 +116,20 @@ document.addEventListener('DOMContentLoaded', () => {
   renderWinners();
   updateTickets();
   setupEventListeners();
+  trackVisit();
 });
+
+// ===== Visit Counter =====
+function trackVisit() {
+  let visitCount = parseInt(localStorage.getItem('chalak_visit_count') || '0');
+  visitCount++;
+  localStorage.setItem('chalak_visit_count', visitCount.toString());
+  
+  const visitCountEl = document.getElementById('visitCount');
+  if (visitCountEl) {
+    visitCountEl.textContent = visitCount.toLocaleString();
+  }
+}
 
 // ===== Event Listeners =====
 function setupEventListeners() {
