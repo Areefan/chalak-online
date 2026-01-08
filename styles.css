@@ -954,3 +954,24 @@ body.fullscreen-mode .ticket {
 ::-webkit-scrollbar-thumb:hover {
     background: var(--primary-hover);
 }
+
+/* ===== Footer ===== */
+.footer {
+    text-align: center;
+    padding: 20px;
+    margin-top: 30px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+}
+
+.footer a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.footer a:hover {
+    color: var(--accent-color);
+    text-shadow: 0 0 10px rgba(255, 217, 61, 0.5);
+}
